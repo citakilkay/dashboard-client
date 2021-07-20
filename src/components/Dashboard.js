@@ -12,32 +12,44 @@ const Dashboard = () => {
         fetchUsers();
     }, [userID]);
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Country</th>
-                    <th>Username</th>
-                    <th>Rank</th>
-                    <th>Money</th>
-                    <th>rankYesterday</th>
+        <>
+        <h1 className="app__title">🚀 Dashboard</h1>
+            <table className="app__table" cellPadding="0" cellSpacing="0">
+            <thead className="app__header">
+                <tr className="app__header-row">
+                    <th className="app__header-col"> <span className="ilkay">#</span></th>
+                    <th className="app__header-col">Country</th>
+                    <th className="app__header-col">Username</th>
+                    <th className="app__header-col">Rank</th>
+                    <th className="app__header-col">Money</th>
+                    <th className="app__header-col">Daily Diff</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody className="app__body">
                 {usersData.map((user, index) => {
+                    const dailyDiff = user.rank - user.rankYesterday;
+                    const dailyDiffColor = () => {
+                        if(dailyDiff > 0) {
+                            return 'green';
+                        } else if(dailyDiff < 0) {
+                            return 'red';
+                        }
+                        return 'yellow';
+                    }
                     return (
-                        <tr key={user._id}>
-                            <td>{index}</td>
-                            <td>{user.country}</td>
-                            <td>{user.username}</td>
-                            <td>{user.rank}</td>
-                            <td>{user.money}</td>
-                            <td>{user.rankYesterday}</td>
+                        <tr className="app__item-row" key={user._id}>
+                            <td className="app__item-col">{index}</td>
+                            <td className="app__item-col">{user.country}</td>
+                            <td className="app__item-col">{user.username}</td>
+                            <td className="app__item-col">{user.rank}</td>
+                            <td className="app__item-col">{user.money}</td>
+                            <td className="app__item-col" style={{color : `${dailyDiffColor()}`}}>{ dailyDiff }</td>
                         </tr>
                     )
                 })}
             </tbody>
         </table>
+        </>
     )
 }
 export default Dashboard;

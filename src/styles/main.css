@@ -1,0 +1,64 @@
+html,
+body {
+  margin: 0;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.app {
+  font-family: 'Lato',sans-serif;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.app__table {
+  width: 50%;
+  background-color: gray;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+@media (max-width: 768px) {
+  .app__table {
+    width: 80%;
+  }
+}
+
+@media (max-width: 576px) {
+  .app__table {
+    width: 100%;
+  }
+}
+
+.app__header {
+  line-height: 2.5rem;
+}
+
+.app__body {
+  background-color: white;
+}
+
+.app__item-row {
+  border-bottom: 2px solid black;
+  line-height: 2rem;
+  text-align: center;
+}
+
+.app__item-row .app__item-col {
+  border-bottom: 1px solid black;
+}
+/*# sourceMappingURL=main.css.map */
