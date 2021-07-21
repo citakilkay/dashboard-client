@@ -2,15 +2,14 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 const Dashboard = () => {
     const[usersData, setUsersData] = useState([{username: 'ilkay', country: 'papua'},{username: 'wdadwa', country: 'hopa'}]);
-    const [userID, setUserID] = useState('60f4942abebb252588581327');
+    const [userId, setUserId] = useState('60f711fe5ff30d477c76bb3d');
     useEffect(() => {
         async function fetchUsers() {
-            const result = await axios.get('http://localhost:5000/users');
-            console.log(result.data);
+            const result = await axios.get(`http://localhost:5000/users/${userId}`);
             setUsersData(result.data);
         }
         fetchUsers();
-    }, [userID]);
+    }, [userId]);
     return (
         <>
         <h1 className="app__title">🚀 Dashboard</h1>
@@ -26,24 +25,17 @@ const Dashboard = () => {
                 </tr>
             </thead>
             <tbody className="app__body">
-                {usersData.map((user, index) => {
+                    {usersData.sort((a, b) => b.weeklyMoney >= a.weeklyMoney ? 1 : b.weeklyMoney < a.weeklyMoney ? -1 : 0).map((user, index) => {
                     const dailyDiff = user.rank - user.rankYesterday;
-                    const dailyDiffColor = () => {
-                        if(dailyDiff > 0) {
-                            return 'green';
-                        } else if(dailyDiff < 0) {
-                            return 'red';
-                        }
-                        return 'yellow';
-                    }
+                    const dailyDiffColor = dailyDiff > 0 ? 'green' : dailyDiff < 0 ? 'red' : 'yellow';
                     return (
                         <tr className="app__item-row" key={user._id}>
                             <td className="app__item-col">{index}</td>
                             <td className="app__item-col">{user.country}</td>
                             <td className="app__item-col">{user.username}</td>
                             <td className="app__item-col">{user.rank}</td>
-                            <td className="app__item-col">{user.money}</td>
-                            <td className="app__item-col" style={{color : `${dailyDiffColor()}`}}>{ dailyDiff }</td>
+                            <td className="app__item-col">{user.weeklyMoney}</td>
+                            <td className="app__item-col" style={{color : `${dailyDiffColor}`}}>{ dailyDiff }</td>
                         </tr>
                     )
                 })}
