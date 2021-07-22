@@ -1,15 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import { socket } from '../socket';
 const Dashboard = () => {
-    const[usersData, setUsersData] = useState([{username: 'ilkay', country: 'papua'},{username: 'wdadwa', country: 'hopa'}]);
-    const [userId, setUserId] = useState('60f711fe5ff30d477c76bb3d');
+    
+    const[usersData, setUsersData] = useState([]);
+    const [userId, setUserId] = useState('60f711fe5ff30d477c76bb3d'); 
+    const [isChangedDb, setIsChangeDb] = useState(false);
+    
+    // listening if there is change on db
+    socket.on('changeDb', data => {
+        setIsChangeDb(!isChangedDb);
+    })
+    
+    // if there is a change on db fetch again usersData
     useEffect(() => {
         async function fetchUsers() {
             const result = await axios.get(`http://localhost:5000/users/${userId}`);
             setUsersData(result.data);
         }
         fetchUsers();
-    }, [userId]);
+    }, [isChangedDb]);
     return (
         <>
         <h1 className="app__title">🚀 Dashboard</h1>
@@ -29,7 +39,7 @@ const Dashboard = () => {
                     const dailyDiff = user.rank - user.rankYesterday;
                     const dailyDiffColor = dailyDiff > 0 ? 'green' : dailyDiff < 0 ? 'red' : 'yellow';
                     return (
-                        <tr className="app__item-row" key={user._id}>
+                        <tr className="app__item-row" key={(user._id) + index}>
                             <td className="app__item-col">{index}</td>
                             <td className="app__item-col">{user.country}</td>
                             <td className="app__item-col">{user.username}</td>
